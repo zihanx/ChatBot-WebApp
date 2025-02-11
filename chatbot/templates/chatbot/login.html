@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Zihan Xu (zihanx2)">
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'chatbot/styles.css' %}">
+</head>
+<body>
+    <div class="header" id="id_header_div">
+        <h1 class="site-name" id="id_site_name"> Wellness-ChatBot </h1>
+        <a href="{%url 'register'%}" class="ref" id="id_register_link"> Register </a>
+    </div>
+    <div class="content-container">
+        <h1 class="page-name" id="id_page_name"> Login </h1>
+        <form class="form-container" action="{%url 'login'%}" method="post">
+            {% if form.non_field_errors %}
+                <ul class="errorlist">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            {%for field in form%}
+                <div class="input-group">
+                    <label for="{{field.id_for_label}}"> {{field.label}} </label>
+                    {{field}}
+                </div>
+            {%endfor%}
+            
+            <button type="submit" class="button" id="id_login_button">Submit</button>
+            {% csrf_token %}
+        </form>
+    </div>
+</body>
+</html>

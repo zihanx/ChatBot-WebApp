@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "./chatbot/static/js/",  
+    "rootDir": "./chatbot/static/js/", 
+    "strict": true,
+    "module": "ESNext",
+    "target": "ES6"
+  },
+  "include": [
+    "chatbot/static/js/**/*.ts"  // Ensure TS finds the files
+  ],
+  "exclude": [
+    "node_modules"  // Avoid excluding your TS files
+  ]
+}

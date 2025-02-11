@@ -1,0 +1,68 @@
+# Ignore Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore environment files
+.env
+*.venv/
+*.virtualenv/
+Pipfile
+Pipfile.lock
+
+# Ignore Django database files
+db.sqlite3
+*.sqlite3
+*.db
+*.log
+
+# Ignore Django migrations (except initial migrations)
+chatbot/migrations/*.py
+!chatbot/migrations/__init__.py
+
+# Ignore static and media files
+staticfiles/
+media/
+*.bak
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Ignore node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+.yarn-integrity
+
+# Ignore Webpack build artifacts
+webpack-stats.json
+dist/
+build/
+
+# Ignore frontend dependencies
+chatbot/static/js/*.map
+chatbot/static/js/dist/
+
+# Ignore TypeScript build artifacts
+*.tsbuildinfo
+chatbot/static/js/*.js
+
+# Ignore compiled CSS
+*.css.map
+*.min.css
+chatbot/static/chatbot/styles.css
+
+# Ignore coverage & test artifacts
+htmlcov/
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+.cache
+*.pytest_cache/
+junit.xml

@@ -1,0 +1,135 @@
+.chat-message {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    width: 70%;
+    margin: 2rem 0;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.send-chat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 70%;
+    margin-bottom: 1rem;
+}
+
+.new-chat-message {
+    width: 90%;
+    height: 50%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 123, 255, 1);
+    background-color: #444;
+    font-size: 1rem;
+    color: white;
+    font: Arial, sans-serif;
+}
+
+.send-button {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(
+        90deg,
+        rgba(0, 123, 255, 1) 0%,
+        rgba(0, 214, 255, 1) 100%
+    );
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.send-button:hover {
+    transform: scale(1.1);
+}
+
+.chat-card {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 1rem;
+    justify-content: flex-end;
+}
+
+/* Received chat-card should have author on the left */
+.chat-card.received {
+    flex-direction: row-reverse;
+}
+
+.chat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-text {
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    font: Arial, sans-serif;
+    color: white;
+    max-width: 50%;
+    min-width: 100px;
+    word-wrap: break-word;
+    white-space: pre-wrap; /* Keep white spaces as it is */
+    width: fit-content;
+    height: fit-content;
+}
+
+.chat-text.received {
+    background-color: #444;
+}
+
+.chat-text.sent {
+    background-color: #4e5de6;
+}
+
+.chat-author {
+    color: white;
+    margin-bottom: 0.5rem;
+    word-wrap: break-word; /* Wrap the name if it’s too long */
+    white-space: normal; /* Keep white spaces as it is */
+    font-size: 1.1rem;
+    width: 120px;
+}
+
+.chat-timestamp {
+    font-size: 0.85rem;
+    color: #444;
+}
+
+.chat-avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%; /* Make the avatar circular */
+    border: 2px solid rgba(0, 123, 255, 1); /* Add a border matching your chat theme */
+    object-fit: cover; /* Ensure the image fits within the circle */
+    cursor: pointer; /* Indicate interactivity */
+}
+
+.chat-owner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.logout-leave-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+#leaveBtn {
+    background: transparent;
+    border: 1px solid rgba(0, 123, 255, 1);
+}
