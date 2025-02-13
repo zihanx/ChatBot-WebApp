@@ -115,9 +115,9 @@ def generate_ai_response_mock():
     response_text = random.choice(responses)  # Select a random mock response
 
     for word in response_text.split():
-        yield word + " "  # Stream one word at a time
+        # yield word + " "  # Stream one word at a time
+        yield f"data: {word} \n\n"
         time.sleep(0.3)  # Simulate AI "thinking"
-
 @login_required
 def stream_ai_response(request):
     """Streams the AI response in real-time."""

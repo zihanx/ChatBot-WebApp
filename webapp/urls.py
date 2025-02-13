@@ -25,4 +25,5 @@ urlpatterns = [
     path("chat/", chat, name="chat"),
     path("chat/send/", send_chat_message, name="chat_send_message"),
     path("logout/", logout_action, name="logout"),
+    path("chat/stream_ai/", stream_ai_response, name="stream_ai"),
 ]
