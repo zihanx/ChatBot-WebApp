@@ -8,6 +8,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from chatbot.models import *
+from django.http import StreamingHttpResponse
+import time
+import random
 
 # Create your views here.
 def login_action(request):
@@ -99,3 +102,23 @@ def send_chat_message(request):
         })
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+
+def generate_ai_response_mock():
+    """Mock AI response generator (streaming one word at a time)."""
+    responses = [
+        "I understand. Sometimes taking a break helps.",
+        "It’s okay to feel that way. Remember to breathe.",
+        "Talking to a friend or journaling might help you process these emotions."
+    ]
+    response_text = random.choice(responses)  # Select a random mock response
+
+    for word in response_text.split():
+        yield word + " "  # Stream one word at a time
+        time.sleep(0.3)  # Simulate AI "thinking"
+
+@login_required
+def stream_ai_response(request):
+    """Streams the AI response in real-time."""
+    return StreamingHttpResponse(generate_ai_response_mock(), content_type="text/event-stream")
