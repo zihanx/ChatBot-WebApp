@@ -15,14 +15,14 @@
 {% block content %}
 <div class="chat-message" id="existingChatMessages">
     {% for message in messages %}
-        <div class="chat-card {% if message.author == user.username %}sent{% else %}received{% endif %}">
-            <div class="chat-text {% if message.author == user.username %}sent{% else %}received{% endif %}">{{ message.text }}</div>
+        <div class="chat-card {% if message.conversation.user.username == user.username %}sent{% else %}received{% endif %}">
+            <div class="chat-text {% if message.conversation.user.username == user.username %}sent{% else %}received{% endif %}">{{ message.text }}</div>
             <div class="chat-owner">
-                <img class="chat-avatar" src="{% static 'chatbot/' %}{% if message.author == user.username %}user.png{% else %}ai.png{% endif %}" 
+                <img class="chat-avatar" src="{% static 'chatbot/' %}{% if message.conversation.user.username == user.username %}user.png{% else %}ai.png{% endif %}" 
                      alt="Avatar">
                 <div class="chat-info">
-                    <div class="chat-author">{{ message.author }}</div>
-                    <div class="chat-timestamp">{{ message.timestamp|date:"H:i A" }}</div>
+                    <div class="chat-author">{{ message.conversation.user.username }}</div>
+                    <div class="chat-timestamp">{{ message.timestamp }}</div>
                 </div>
             </div>
         </div>

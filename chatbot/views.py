@@ -1,3 +1,4 @@
+from django.utils import timezone
 import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -6,6 +7,7 @@ from chatbot.forms import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from chatbot.models import *
 
 # Create your views here.
 def login_action(request):
@@ -57,60 +59,43 @@ def logout_action(request):
     logout(request)
     return redirect('login')
 
-chat_messages = []
 
 def chat(request):
-    global chat_messages
-    # if request.method == "POST":
-    #     form = ChatMessageForm(request.POST)
-    #     if form.is_valid():
-    #         user_message = {
-    #             "author": request.user.username,
-    #             "text": form.clean_text(),
-    #             "timestamp": now(),
-    #         }
-    #         chat_messages.append(user_message)
-    #         print(chat_messages)
-    #         # Mock AI response
-    #         ai_response = {
-    #             "author": "Chat Bot",
-    #             "text": "I'm just a bot, but I'm here to chat!",
-    #             "timestamp": now(),
-    #         }
-    #         chat_messages.append(ai_response)
-
-    #         return redirect("chat")  # Reload chat page
-
-    # else:
+    conversation, created = Conversation.objects.get_or_create(user=request.user)
+    messages = conversation.messages.all().order_by("timestamp")
     form = ChatMessageForm()
 
-    return render(request, "chatbot/chat.html", {"chat_form": form, "messages": chat_messages})
+    return render(request, "chatbot/chat.html", {"chat_form": form, "messages": messages})
 
 
 
+@login_required
 def send_chat_message(request):
-    """ Handles chat message submission via form POST """
+    """Handles storing user messages and getting AI responses."""
     if request.method == "POST":
-        text = request.POST.get("text", "").strip()  # Get form data safely
+        user_input = request.POST.get("text", "").strip()
+        if not user_input:
+            return JsonResponse({"error": "Empty message"}, status=400)
 
-        if not text:
-            return JsonResponse({"success": False, "error": "Message cannot be empty"}, status=400)
+        conversation, _ = Conversation.objects.get_or_create(user=request.user)
 
-        new_message = {
-            "author": request.user.username,
-            "text": text,
-            "timestamp": now().strftime("%I:%M %p"),
-        }
-        chat_messages.append(new_message)
+        # Save user message
+        new_message = Message.objects.create(conversation=conversation, author=request.user.username, text=user_input)
 
-        # Mock AI response
-        ai_response = {
-            "author": "Chat Bot",
-            "text": "I'm just a bot, but I'm here to chat!",
-            "timestamp": now().strftime("%I:%M %p"),
-        }
-        chat_messages.append(ai_response)
+        # # Get AI response
+        # chatbot = Chatbot()  
+        # ai_response = chatbot.generate_response(user_input)
 
-        return JsonResponse({"success": True, "message": new_message})
+        # Save AI message
+        # Message.objects.create(conversation=conversation, sender="ai", text=ai_response)
 
-    return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
+        return JsonResponse({
+            "success": True,
+            "message": {
+                "author": request.user.username,  # Ensure "user" is correctly set here
+                "text": user_input,
+                "timestamp": new_message.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
+            }
+        })
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
