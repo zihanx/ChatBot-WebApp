@@ -66,3 +66,5 @@ coverage.xml
 .cache
 *.pytest_cache/
 junit.xml
+
+!chatbot/static/chatbot/styles.css
