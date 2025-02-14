@@ -85,13 +85,6 @@ def send_chat_message(request):
         # Save user message
         new_message = Message.objects.create(conversation=conversation, author=request.user.username, text=user_input)
 
-        # # Get AI response
-        # chatbot = Chatbot()  
-        # ai_response = chatbot.generate_response(user_input)
-
-        # Save AI message
-        # Message.objects.create(conversation=conversation, sender="ai", text=ai_response)
-
         return JsonResponse({
             "success": True,
             "message": {

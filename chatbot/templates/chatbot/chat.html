@@ -23,7 +23,7 @@
                      alt="Avatar">
                 <div class="chat-info">
                     <div class="chat-author">{{ message.conversation.user.username }}</div>
-                    <div class="chat-timestamp">{{ message.timestamp }}</div>
+                    <div class="chat-timestamp">{{ message.timestamp|date:"Y-m-d H:i:s" }}</div>
                 </div>
             </div>
         </div>

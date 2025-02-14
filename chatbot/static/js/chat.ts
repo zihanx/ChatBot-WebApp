@@ -77,6 +77,16 @@
 import { marked } from "marked";
 
 document.addEventListener("DOMContentLoaded", () => {
+    const chatMessagesContainer = document.getElementById("existingChatMessages");
+
+    if (chatMessagesContainer) {
+        // Scroll to the bottom when the page loads
+        chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+    }
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
     const chatForm = document.getElementById("chatForm") as HTMLFormElement;
     const chatInput = document.querySelector(".new-chat-message") as HTMLTextAreaElement;
     const chatMessagesContainer = document.getElementById("existingChatMessages") as HTMLDivElement;
