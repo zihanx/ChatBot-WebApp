@@ -98,6 +98,12 @@
     background-color: #4e5de6;
 }
 
+.chat-text p {
+    margin: 0; /* Remove default paragraph margins */
+    padding: 0; /* Ensure no extra padding */
+    display: inline; /* Prevent block behavior */
+}
+
 .chat-author {
     color: white;
     margin-bottom: 0.5rem;
