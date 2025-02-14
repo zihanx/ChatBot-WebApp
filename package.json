@@ -16,6 +16,7 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "chatbot-webapp": "file:"
+    "chatbot-webapp": "file:",
+    "marked": "^15.0.7"
   }
 }

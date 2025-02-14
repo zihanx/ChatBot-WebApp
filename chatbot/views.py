@@ -118,7 +118,28 @@ def generate_ai_response_mock():
         # yield word + " "  # Stream one word at a time
         yield f"data: {word} \n\n"
         time.sleep(0.3)  # Simulate AI "thinking"
+
+from google import genai
+def generate_ai_response(input):
+    API_KEY = "AIzaSyBB-Hx05N7Xqf4IQYuy7yMRzjowxKmz7_o"
+    client = genai.Client(api_key=API_KEY)
+    print("Input: ", input)
+
+    response = client.models.generate_content_stream(
+        model="gemini-2.0-flash",
+        contents=[input])
+    for chunk in response:
+        encoded_data = json.dumps({"text": chunk.text})  # Encode to JSON
+        yield f"data: {encoded_data}\n\n"  # Send JSON string
+        # yield f"data: {chunk.text} \n\n"
+        print("Chunk: ", chunk.text)
+        
+        
+
 @login_required
 def stream_ai_response(request):
     """Streams the AI response in real-time."""
-    return StreamingHttpResponse(generate_ai_response_mock(), content_type="text/event-stream")
+    user_input = request.GET.get("text", "")  # Get user input from request
+    if not user_input:
+        return JsonResponse({"error": "No user input provided"}, status=400)
+    return StreamingHttpResponse(generate_ai_response(user_input), content_type="text/event-stream")

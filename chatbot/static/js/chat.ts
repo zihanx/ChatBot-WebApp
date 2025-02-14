@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 chatInput.value = ""; // Clear input after sending
 
                 // Start AI response stream
-                streamAIResponse();
+                streamAIResponse(data.message.text);
             } else {
                 chatSubmitButton.disabled = false; // Enable submit
             }
@@ -163,13 +163,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    function streamAIResponse() {
-        const eventSource = new EventSource("/chat/stream_ai/");
+    function streamAIResponse(userInput: string) {
+        const eventSource = new EventSource(`/chat/stream_ai/?text=${encodeURIComponent(userInput)}`);
         let aiMessageContainer: HTMLDivElement | null = null;
 
         eventSource.onmessage = (event) => {
-            const data = event.data;
+            const data = JSON.parse(event.data).text;
             // const data = JSON.parse(event.data);
+            console.log("raw event:", event);
             console.log("AI response streaming:", data);
 
             if (!aiMessageContainer) {

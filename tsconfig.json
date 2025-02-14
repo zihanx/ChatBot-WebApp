@@ -1,15 +1,34 @@
+// {
+//   "compilerOptions": {
+//     "outDir": "./chatbot/static/js/",  
+//     "rootDir": "./chatbot/static/js/", 
+//     "strict": true,
+//     "module": "ESNext",
+//     "target": "ES6"
+//   },
+//   "include": [
+//     "chatbot/static/js/**/*.ts"  // Ensure TS finds the files
+//   ],
+//   "exclude": [
+//     "node_modules"  // Avoid excluding your TS files
+//   ]
+// }
+
 {
   "compilerOptions": {
     "outDir": "./chatbot/static/js/",  
     "rootDir": "./chatbot/static/js/", 
     "strict": true,
-    "module": "ESNext",
-    "target": "ES6"
+    "module": "NodeNext",  // 🔹 Fix for module resolution
+    "moduleResolution": "NodeNext",  // 🔹 Ensures TS correctly resolves modules
+    "target": "ES6",
+    "esModuleInterop": true,  // 🔹 Allows CommonJS-style imports
+    "skipLibCheck": true  // 🔹 Avoids issues with type mismatches
   },
   "include": [
-    "chatbot/static/js/**/*.ts"  // Ensure TS finds the files
+    "chatbot/static/js/**/*.ts"  
   ],
   "exclude": [
-    "node_modules"  // Avoid excluding your TS files
+    "node_modules"
   ]
 }
