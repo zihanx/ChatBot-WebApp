@@ -2,7 +2,7 @@
     display: flex;
     flex-grow: 1;
     flex-direction: column;
-    width: 70%;
+    width: 85%;
     margin: 2rem 0;
     padding: 1rem;
     overflow-y: auto;
