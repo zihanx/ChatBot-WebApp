@@ -74,7 +74,7 @@
 //         chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight; // Auto-scroll
 //     }
 // });
-
+import { marked } from "marked";
 
 document.addEventListener("DOMContentLoaded", () => {
     const chatForm = document.getElementById("chatForm") as HTMLFormElement;
@@ -163,15 +163,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    function streamAIResponse(userInput: string) {
+    async function streamAIResponse(userInput: string) {
         const eventSource = new EventSource(`/chat/stream_ai/?text=${encodeURIComponent(userInput)}`);
         let aiMessageContainer: HTMLDivElement | null = null;
+        let accumulatedText = "";
 
-        eventSource.onmessage = (event) => {
+        eventSource.onmessage = async (event) => {
             const data = JSON.parse(event.data).text;
             // const data = JSON.parse(event.data);
-            console.log("raw event:", event);
-            console.log("AI response streaming:", data);
+            // console.log("raw event:", event);
+            // console.log("AI response streaming:", data);
 
             if (!aiMessageContainer) {
                 // Create an AI message bubble immediately
@@ -183,20 +184,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 let chatText = aiMessageContainer.querySelector(".chat-text") as HTMLDivElement;
                 if (chatText) {
                     chatText.textContent = data; // Initialize text
+                    // chatText.innerHTML = await marked.parse(data);
                 }
             } else {
                 // Append new text dynamically
                 let chatText = aiMessageContainer.querySelector(".chat-text") as HTMLDivElement;
                 if (chatText) {
-                    chatText.textContent += " " + data; // Append words
+                    chatText.textContent += data; // Append words
+                    // chatText.innerHTML += await marked.parse(data);
                 }
             }
-
+            accumulatedText += data; // Accumulate text
             // Auto-scroll to bottom
             chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
         };
 
-        eventSource.onerror = (error) => {
+        eventSource.onerror = async (error) => {
             chatSubmitButton.disabled = false; // Enable submit button
             if (eventSource.readyState === EventSource.CLOSED) {
                 console.log("SSE Connection Closed Normally.");
@@ -204,6 +207,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("SSE Connection Error:", error);
             }
             eventSource.close();
+            // change the chatText to markdown
+            if (aiMessageContainer) {
+                let chatText = aiMessageContainer.querySelector(".chat-text") as HTMLDivElement;
+                if (chatText) {
+                    chatText.innerHTML = await marked.parse(accumulatedText); // 🔹 Render full Markdown
+                }
+            }
         };
     }
 
