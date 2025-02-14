@@ -17,7 +17,7 @@ def login_action(request):
     # display the login page if the request method is GET
     if request.method == "GET":
         if request.user.is_authenticated:
-            return redirect('chat_page')
+            return redirect('chat')
         form = LoginForm()
         context = {
             "form": form
