@@ -1,0 +1,65 @@
+{% extends "chatbot/nav_header.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block extra_style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'chatbot/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content-container Profile">
+        <h2 class="page-name">Profile</h2>
+
+        <div class="form-container Profile">
+            <form method="post" class="styled-form">
+                {% csrf_token %}
+                <div class="input-group">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                </div>
+
+                <div class="input-group">
+                    {{ form.age.label_tag }}
+                    {{ form.age }}
+                </div>
+
+                <div class="input-group">
+                    {{ form.gender.label_tag }}
+                    {{ form.gender }}
+                </div>
+
+                <div class="input-group">
+                    {% comment %} {{ form.bio.label_tag }} {% endcomment %}
+                    <label>About me:</label>
+                    {{ form.bio }}
+                </div>
+
+                <div class="input-group">
+                    {{ form.interests.label_tag }}
+                    {{ form.interests }}
+                </div>
+
+                <div class="input-group">
+                    <label for="id_current_mood_level">Current Mood Level:</label>
+                    {{ form.current_mood_level }}
+                </div>
+
+                <div class="input-group">
+                    <label>Select the moods that best describe you:</label>
+                    <div class="mood-multi-container">
+                        {% for choice in form.current_mood_tag %}
+                            <div class="mood-option">
+                                {{ choice.tag }}
+                                <label for="{{ choice.id_for_label }}">{{ choice.choice_label }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+                <button type="submit" class="button">Save</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

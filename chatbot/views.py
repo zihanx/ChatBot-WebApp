@@ -144,3 +144,13 @@ def stream_ai_response(request):
     if not user_input:
         return JsonResponse({"error": "No user input provided"}, status=400)
     return StreamingHttpResponse(generate_ai_response(request, user_input), content_type="text/event-stream")
+
+@login_required
+def profile(request):
+    profile, _ = Profile.objects.get_or_create(user=request.user)
+    form = ProfileForm(instance=profile)
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+    return render(request, "chatbot/profile.html", {"form": form})

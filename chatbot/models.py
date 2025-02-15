@@ -21,3 +21,56 @@ class Message(models.Model):
 
     def __str__(self):
         return f"{self.author.capitalize()} - {self.timestamp.strftime('%Y-%m-%d %H:%M:%S')}"
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    name = models.CharField(max_length=50, blank=True)
+    age = models.PositiveIntegerField(null=True, blank=True)
+    GEDNER_CHOICES = [
+        ("male", "Male"),
+        ("female", "Female"),
+        ("non-binary", "Non-binary"),
+        ("prefer_not_say", "Prefer not to say"),
+        ("other", "Other"),
+    ]
+    gender = models.CharField(max_length=20, choices=GEDNER_CHOICES, blank=True)
+    bio = models.TextField(blank=True, help_text="A short description about yourself.")
+    interests = models.TextField(blank=True, help_text="What are you interested in? (comma-separated)")
+    conversation_summary = models.TextField(blank=True)
+    
+    MOOD_LEVEL_CHOICES = [
+        (1, "Very Unpleasant"),
+        (2, "Unpleasant"),
+        (3, "A Bit Unpleasant"),
+        (4, "Neutral"),
+        (5, "A Bit Pleasant"),
+        (6, "Pleasant"),
+        (7, "Very Pleasant"),
+    ]
+    current_mood_level = models.IntegerField(choices=MOOD_LEVEL_CHOICES, default=4)
+    
+    MOOD_TAG_CHOICES = [
+        ("calm", "Calm"),
+        ("stressed", "Stressed"),
+        ("anxious", "Anxious"),
+        ("excited", "Excited"),
+        ("tired", "Tired"),
+        ("grateful", "Grateful"),
+        ("happy", "Happy"),
+        ("frustrated", "Frustrated"),
+        ("sad", "Sad"),
+        ("hopeful", "Hopeful"),
+        ("angry", "Angry"),
+        ("lonely", "Lonely"),
+        ("confident", "Confident"),
+        ("content", "Content"),
+        ("motivated", "Motivated"),
+        ("bored", "Bored"),
+        ("neutral", "Neutral"),
+    ]
+    current_mood_tag = models.JSONField(default=list, blank=True)
+    
+    def __str__(self):
+        return self.user.username
+    

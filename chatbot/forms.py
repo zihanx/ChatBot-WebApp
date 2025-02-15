@@ -2,6 +2,7 @@ from django import forms
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from chatbot.models import Profile
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="Username", widget=forms.TextInput(attrs={'class': 'input-field'}))
@@ -70,3 +71,22 @@ class ChatMessageForm(forms.Form):
     )
     def clean_text(self):
         return self.cleaned_data["text"].strip()
+
+class ProfileForm(forms.ModelForm):
+    current_mood_tag = forms.MultipleChoiceField(
+        choices=Profile.MOOD_TAG_CHOICES,  # Use choices from model
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "mood-multi-select"}),
+        required=False
+    )
+
+    class Meta:
+        model = Profile
+        fields = ["name", "age", "gender", "bio", "interests", "current_mood_level", "current_mood_tag"]
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "input-field", "placeholder": "Enter your name"}),
+            "age": forms.NumberInput(attrs={"class": "input-field", "placeholder": "Enter your age"}),
+            "gender": forms.Select(attrs={"class": "input-field"}),
+            "bio": forms.Textarea(attrs={"class": "input-field", "rows": 3, "placeholder": "Tell us about yourself..."}),
+            "interests": forms.TextInput(attrs={"class": "input-field", "placeholder": "e.g., Music, Reading, Sports"}),
+            "current_mood_level": forms.Select(attrs={"class": "input-field"}),
+        }
