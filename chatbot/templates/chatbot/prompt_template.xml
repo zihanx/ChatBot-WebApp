@@ -10,7 +10,12 @@
 
     <user_context>
         <name>{{ name }}</name>
-        <mood>{{ mood }}</mood>
+        <age>{{ age }}</age>
+        <gender>{{ gender }}</gender>
+        <mood>
+            <level>{{ mood_level }}</level>
+            <tags>{% for tag in mood_tags %}{{ tag }}, {% endfor %}</tags>
+        </mood>
         <preferences>{{ preferences }}</preferences>
     </user_context>
 
@@ -31,8 +36,7 @@
 
     <chat_history>
         {% for message in chat_history %}
-        <message>
-            <role>{{ message.role }}</role>
+        <message role="{{ message.role }}">
             <content>{{ message.content }}</content>
         </message>
         {% endfor %}
