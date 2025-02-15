@@ -11,6 +11,9 @@ from chatbot.models import *
 from django.http import StreamingHttpResponse
 import time
 import random
+from google import genai
+from dotenv import load_dotenv
+import os
 
 # Create your views here.
 def login_action(request):
@@ -112,10 +115,11 @@ def generate_ai_response_mock():
         yield f"data: {word} \n\n"
         time.sleep(0.3)  # Simulate AI "thinking"
 
-from google import genai
+
 def generate_ai_response(request, input):
-    API_KEY = "AIzaSyBB-Hx05N7Xqf4IQYuy7yMRzjowxKmz7_o"
-    client = genai.Client(api_key=API_KEY)
+    load_dotenv()
+    api_key = os.getenv("GEMINI_API_KEY")
+    client = genai.Client(api_key=api_key)
     accumulated_text = ""
     
     response = client.models.generate_content_stream(
