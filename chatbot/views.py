@@ -15,6 +15,8 @@ from google import genai
 from dotenv import load_dotenv
 import os
 
+from chatbot.utils.prompt import generate_prompt
+
 # Create your views here.
 def login_action(request):
     # display the login page if the request method is GET
@@ -116,7 +118,7 @@ def generate_ai_response_mock():
         time.sleep(0.3)  # Simulate AI "thinking"
 
 
-def generate_ai_response(request, input):
+def generate_ai_response(request, user_input, revised_prompt):
     load_dotenv()
     api_key = os.getenv("GEMINI_API_KEY")
     client = genai.Client(api_key=api_key)
@@ -124,15 +126,20 @@ def generate_ai_response(request, input):
     
     response = client.models.generate_content_stream(
         model="gemini-2.0-flash",
-        contents=[input])
+        contents=[revised_prompt])
     for chunk in response:
         encoded_data = json.dumps({"text": chunk.text})  # Encode to JSON
         yield f"data: {encoded_data}\n\n"  # Send JSON string
-        print("Chunk: ", chunk.text)
+        # print("Chunk: ", chunk.text)
         accumulated_text += chunk.text
     
     conversation = Conversation.objects.get(user=request.user)
     Message.objects.create(conversation=conversation, author="AI", text=accumulated_text)
+    
+    new_round = {"user_input": user_input, "ai_response": accumulated_text}
+    profile, _ = Profile.objects.get_or_create(user=request.user)
+    profile.last_chat_history.append(new_round)
+    profile.save()
     
         
         
@@ -143,7 +150,9 @@ def stream_ai_response(request):
     user_input = request.GET.get("text", "")  # Get user input from request
     if not user_input:
         return JsonResponse({"error": "No user input provided"}, status=400)
-    return StreamingHttpResponse(generate_ai_response(request, user_input), content_type="text/event-stream")
+    revised_prompt = generate_prompt(request.user, user_input)
+    print("Revised prompt: ", revised_prompt)
+    return StreamingHttpResponse(generate_ai_response(request, user_input, revised_prompt), content_type="text/event-stream")
 
 @login_required
 def profile(request):

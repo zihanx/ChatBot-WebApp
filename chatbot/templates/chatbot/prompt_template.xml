@@ -35,10 +35,11 @@
     </conversation_summary>
 
     <chat_history>
-        {% for message in chat_history %}
-        <message role="{{ message.role }}">
-            <content>{{ message.content }}</content>
-        </message>
+        {% for round in chat_history %}
+        <round>
+            <user>{{ round.user_input }}</user>
+            <assistant>{{ round.ai_response }}</assistant>
+        </round>
         {% endfor %}
     </chat_history>
 </prompt>

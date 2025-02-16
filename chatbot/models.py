@@ -71,6 +71,9 @@ class Profile(models.Model):
     ]
     current_mood_tag = models.JSONField(default=list, blank=True)
     
+    conversation_summary = models.TextField(blank=True, help_text="A summary of the conversation with the AI.")
+    last_chat_history = models.JSONField(default=list, blank=True, help_text="The last chat history with the AI.")
+    
     def __str__(self):
         return self.user.username
     
