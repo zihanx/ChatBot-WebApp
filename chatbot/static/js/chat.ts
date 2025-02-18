@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     chatForm.addEventListener("submit", async (event) => {
-        event.preventDefault(); // Prevent full-page reload
+        event.preventDefault();
         chatSubmitButton.disabled = true; // Disable submit button
         const formData = new FormData(chatForm);
 
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 chatSubmitButton.disabled = false; // Enable submit
             }
         } catch (error) {
-            chatSubmitButton.disabled = false; // Enable submit button
+            chatSubmitButton.disabled = false;
             console.error("Error sending message:", error);
         }
     });

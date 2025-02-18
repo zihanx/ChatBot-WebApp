@@ -99,16 +99,16 @@
 }
 
 .chat-text p {
-    margin: 0; /* Remove default paragraph margins */
-    padding: 0; /* Ensure no extra padding */
-    display: inline; /* Prevent block behavior */
+    margin: 0;
+    padding: 0;
+    display: inline;
 }
 
 .chat-author {
     color: white;
     margin-bottom: 0.5rem;
-    word-wrap: break-word; /* Wrap the name if it’s too long */
-    white-space: normal; /* Keep white spaces as it is */
+    word-wrap: break-word;
+    white-space: normal;
     font-size: 1.1rem;
     width: 120px;
 }
@@ -121,10 +121,10 @@
 .chat-avatar {
     width: 3rem;
     height: 3rem;
-    border-radius: 50%; /* Make the avatar circular */
-    border: 2px solid rgba(0, 123, 255, 1); /* Add a border matching your chat theme */
-    object-fit: cover; /* Ensure the image fits within the circle */
-    cursor: pointer; /* Indicate interactivity */
+    border-radius: 50%;
+    border: 2px solid rgba(0, 123, 255, 1);
+    object-fit: cover;
+    cursor: pointer;
 }
 
 .chat-owner {

@@ -11,7 +11,6 @@ class Conversation(models.Model):
 
 
 class Message(models.Model):
-    """Stores individual messages in a conversation."""
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name="messages")
     # author = models.CharField(max_length=10, choices=[("user", "User"), ("ai", "AI")])
     author = models.CharField(max_length=50)
