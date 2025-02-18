@@ -79,7 +79,6 @@ def chat(request):
 
 @login_required
 def send_chat_message(request):
-    """Handles storing user messages and getting AI responses."""
     if request.method == "POST":
         user_input = request.POST.get("text", "").strip()
         if not user_input:
@@ -104,7 +103,6 @@ def send_chat_message(request):
 
 
 def generate_ai_response_mock():
-    """Mock AI response generator (streaming one word at a time)."""
     responses = [
         "I understand. Sometimes taking a break helps.",
         "It’s okay to feel that way. Remember to breathe.",
@@ -124,14 +122,24 @@ def generate_ai_response(request, user_input, revised_prompt):
     client = genai.Client(api_key=api_key)
     accumulated_text = ""
     
-    response = client.models.generate_content_stream(
-        model="gemini-2.0-flash",
-        contents=[revised_prompt])
-    for chunk in response:
-        encoded_data = json.dumps({"text": chunk.text})  # Encode to JSON
-        yield f"data: {encoded_data}\n\n"  # Send JSON string
-        # print("Chunk: ", chunk.text)
-        accumulated_text += chunk.text
+    try:
+        response = client.models.generate_content_stream(
+            model="gemini-2.0-flash",
+            contents=[revised_prompt])
+        for chunk in response:
+            encoded_data = json.dumps({"text": chunk.text})  # Encode to JSON
+            yield f"data: {encoded_data}\n\n"  # Send JSON string
+            # print("Chunk: ", chunk.text)
+            accumulated_text += chunk.text
+    except Exception as e:
+        error_message = "AI response failed， please try again later."
+        print("Error: ", e)
+        encoded_data = json.dumps({"text": error_message})
+        yield f"data: {encoded_data}\n\n"
+        
+        conversation = Conversation.objects.get(user=request.user)
+        Message.objects.create(conversation=conversation, author="AI", text=error_message)
+        return
     
     conversation = Conversation.objects.get(user=request.user)
     Message.objects.create(conversation=conversation, author="AI", text=accumulated_text)
@@ -146,7 +154,6 @@ def generate_ai_response(request, user_input, revised_prompt):
 
 @login_required
 def stream_ai_response(request):
-    """Streams the AI response in real-time."""
     user_input = request.GET.get("text", "")  # Get user input from request
     if not user_input:
         return JsonResponse({"error": "No user input provided"}, status=400)
