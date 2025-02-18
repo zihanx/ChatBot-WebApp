@@ -12,8 +12,8 @@ env = Environment(loader=FileSystemLoader(TEMPLATE_DIR), autoescape=True)
 # Load the XML template
 template = env.get_template("chatbot/prompt_template.xml")
 
-# TOKEN_LIMIT = 8192
-TOKEN_LIMIT = 800
+TOKEN_LIMIT = 8192
+# TOKEN_LIMIT = 800
 
 
 MOOD_LEVEL_MAP = {
