@@ -62,10 +62,11 @@ def generate_prompt(user, latest_user_prompt):
             "gender": profile.gender or "Not specified",
             "mood_level": f"{mood_level_desc} ({profile.current_mood_level}/7)",
             "mood_tags": mood_tags_list,
-            "preferences": profile.interests or "Not specified",
+            "interests": profile.interests or "Not specified",
             "conversation_summary": profile.conversation_summary or "",
             "chat_history": profile.last_chat_history or [],
-            "latest_user_prompt": latest_user_prompt
+            "latest_user_prompt": latest_user_prompt,
+            "user_bio": profile.bio or "Not specified"
         }
     except Profile.DoesNotExist:
         user_context = {
@@ -74,10 +75,11 @@ def generate_prompt(user, latest_user_prompt):
             "gender": "Not specified",
             "mood_level": "Neutral (4/7)",
             "mood_tags": "The user has not specified mood tags.",
-            "preferences": "Not specified",
+            "interests": "Not specified",
             "conversation_summary": "",
             "chat_history": [],
-            "latest_user_prompt": latest_user_prompt
+            "latest_user_prompt": latest_user_prompt,
+            "user_bio": "Not specified"
         }
 
     # Render the initial prompt
